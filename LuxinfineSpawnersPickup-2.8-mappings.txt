@@ -1,0 +1,18 @@
+ml.luxinfine.advfarmstation.SpawnersPickerMod$1 -> team.luxinfine.1675286732796.c$u
+
+ml.luxinfine.advfarmstation.SpawnersPickerMod -> team.luxinfine.1675286732796.c
+ml.luxinfine.advfarmstation.SpawnersPickerMod.onSpawnerBreak(net.minecraftforge.event.world.BlockEvent$BreakEvent)void -> catch public
+ml.luxinfine.advfarmstation.SpawnersPickerMod.onEndTick(cpw.mods.fml.common.gameevent.TickEvent$ServerTickEvent)void -> u private
+ml.luxinfine.advfarmstation.SpawnersPickerMod.onSpawnerPlace(net.minecraftforge.event.world.BlockEvent$PlaceEvent)void -> abstract this
+ml.luxinfine.advfarmstation.SpawnersPickerMod.onSpawnerDrop(net.minecraftforge.event.world.BlockEvent$HarvestDropsEvent)void ->  f
+ml.luxinfine.advfarmstation.SpawnersPickerMod.entityName2ID(net.minecraft.world.World, java.lang.String)int ->  u
+ml.luxinfine.advfarmstation.SpawnersPickerMod.brokenSpawners[java.util.Map] ->  t
+ml.luxinfine.advfarmstation.SpawnersPickerMod.onInit(cpw.mods.fml.common.event.FMLInitializationEvent)void ->  w
+ml.luxinfine.advfarmstation.SpawnersPickerMod.brokenEIOSpawner[net.minecraft.item.Item] ->  t
+
+ml.luxinfine.advfarmstation.SpawnersPickerMod$Position -> team.luxinfine.1675286732796.c$g
+ml.luxinfine.advfarmstation.SpawnersPickerMod$Position.z[int] -> else n
+ml.luxinfine.advfarmstation.SpawnersPickerMod$Position.y[int] ->  p
+ml.luxinfine.advfarmstation.SpawnersPickerMod$Position.x[int] ->  y
+ml.luxinfine.advfarmstation.SpawnersPickerMod$Position.dim[int] ->  g
+

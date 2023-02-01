@@ -1,0 +1,81 @@
+import java.util.regex.Pattern
+import java.nio.file.Files
+import java.util.stream.Collectors
+
+buildscript {
+    repositories {
+        mavenCentral()
+        maven {
+            name 'forge'
+            url 'https://maven.minecraftforge.net'
+        }
+    }
+    dependencies {
+        classpath('com.anatawa12.forge:ForgeGradle:1.2-1.0.+') {
+            changing = true
+        }
+    }
+}
+
+apply plugin: 'forge'
+
+[compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
+sourceCompatibility = '1.8'
+targetCompatibility = '1.8'
+
+version = "2.8"
+group= "ml.luxinfine"
+archivesBaseName = "LuxinfineSpawnersPickup"
+
+minecraft {
+    version = "1.7.10-10.13.4.1614-1.7.10"
+    runDir = "run"
+}
+
+dependencies {
+	implementation fileTree(include: ['*.jar'], dir: 'lib')
+}
+
+repositories {
+	flatDir {
+		dirs 'lib'
+	}
+}
+
+task useSplitter(type: Exec) {
+    afterEvaluate {
+        org.gradle.api.file.RegularFile builtJar = tasks.jar.archiveFile.orNull
+        if (builtJar != null) {
+            String[] split = jar_splitter_path.toString().split(Pattern.quote(File.separator))
+            String[] path = new String[split.length - 1]
+            System.arraycopy(split, 0, path, 0, path.length)
+            workingDir = String.join(File.separator, path)
+
+
+            java.nio.file.Path depsFile = Files.createTempFile("JarSplitter", ".tmp")
+            Set<String> depends = new HashSet<>()
+
+            try {
+				Configuration copiedConfiguration = configurations.implementation.copyRecursive()
+				copiedConfiguration.setCanBeResolved(true)
+				copiedConfiguration.resolvedConfiguration.files.each {depends.add(it.toString()) }
+
+				Configuration copiedConfiguration2 = configurations.implementation.copyRecursive()
+				copiedConfiguration2.setCanBeResolved(true)
+				copiedConfiguration2.resolvedConfiguration.firstLevelModuleDependencies.each { dep ->
+					dep.allModuleArtifacts.each {
+						depends.add(it.file.toString())
+					}
+				}
+			} catch (Throwable t) {
+				t.printStackTrace();
+			}
+
+            Files.write(depsFile, depends.stream().filter(f -> f.toString().endsWith(".jar")).collect(Collectors.toList()))
+
+            commandLine 'cmd ', '/c', 'java -jar JarSplitter-1.13-beta.jar "' + builtJar + '" ' + removeLocalNames + ' ' + removeLineNumbers + ' ' + shuffleMembers + ' ' + removeJavaxAnnotations + ' ' + renameFunc + ' ' + unsafeBuilding + ' ' + buildClient + ' ' + buildServer + ' "' + srgMappings + '" ' + defaultObfPolicy + ' "' + depsFile + '"'
+        }
+    }
+}
+
+build.finalizedBy useSplitter
